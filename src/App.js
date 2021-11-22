@@ -12,6 +12,7 @@ function App() {
     
       <Routes>
         <Route path="/home" element={<Home />}></Route>
+        <Route path="/:company" element={<Company />}></Route>
       </Routes>
       
       

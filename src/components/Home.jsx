@@ -3,7 +3,7 @@ import {Nav, Row, Col, Container, Navbar, Form, FormControl, Button, ListGroup} 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, setState, useEffect } from 'react';
 import reactDom from 'react-dom';
-
+import moment from 'moment'
 const Home =  () =>{
     
     const [query, setQuery] = useState();
@@ -11,7 +11,7 @@ const Home =  () =>{
 
     useEffect(()=>{
         fetchJobs();
-    })
+    },[query])
 
     const fetchJobs = async () =>{
         try {
@@ -30,79 +30,68 @@ const Home =  () =>{
         }
     }
     
-    return(
-        <>
-         
-            <Navbar bg="dark" variant="dark">
+        return(
+            <>
+            
+                <Navbar bg="dark" variant="dark">
+                    <Container>
+                        <Navbar.Brand href="#home">Find a Job</Navbar.Brand>
+                        <Nav className="me-auto">
+                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href="#features">Features</Nav.Link>
+                        </Nav>
+
+                    </Container>
+                </Navbar>
+    
+    
+
+                <h1>Here is your Job Search Results: </h1>
                 <Container>
-                <Navbar.Brand href="#home">Find a Job</Navbar.Brand>
-                <Nav className="me-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#features">Features</Nav.Link>
-                
-                </Nav>
+                    <Row id='row1'>
+                        <Col id='col1'>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search"
+                                    value={query}
+                                    onChange={e => setQuery(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <ListGroup as="ul">
+                                {
+                                   jobOffers.map((job) => (
 
+                                        <ListGroup.Item
+                                            as="li"
+                                            className="d-flex justify-content-between align-items-start"
+                                        >
+                                            <div className="ms-2 me-auto">
+                                                <div className="fw-bold">{job.title}</div>
+                                                <div><a href = {job.url}> {job.company_name}</a> </div>
+                                                <div><e>Publication Date:</e> <span className="date1">{moment(job.publication_date).format('DD/MM/YYYY')}</span></div>
+
+                                            </div><hr />
+                                        </ListGroup.Item>
+                                        
+                                    ))
+                                }
+
+                            </ListGroup>
+                        </Col>
+                    </Row>
                 </Container>
-            </Navbar>
- 
-  
-
-            <h1>Here is your Job Search Results: </h1>
-            <Container>
-                <Row id='row1'>
-                    <Col id='col1'>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Control
-                                type="text"
-                                placeholder="Search"
-                                value={query}
-                                onChange={e => setQuery(e.target.value)}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ListGroup as="ul">
-                            {
-                                jobOffers.length > 0 && jobOffers.map((job) => (
-
-                                    <ListGroup.Item
-                                        as="li"
-                                        className="d-flex justify-content-between align-items-start"
-                                    >
-                                        <div className="ms-2 me-auto">
-                                            <div className="fw-bold">{job.category}</div>
-                                            <div>{job.company_name}</div>
-                                            <div>publication date: <span className="date1">{job.publication_date}</span></div>
-
-                                        </div><hr />
-                                    </ListGroup.Item>
-                                    
-                                ))
-                            }
-
-                        </ListGroup>
-                    </Col>
-                </Row>
-        </Container>
-        </>
-    )
+            </>
+        )
 
         
 
         
                         }
-
-
-
-
-
-
-
-
-
-
 
 
 export default Home
