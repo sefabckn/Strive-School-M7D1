@@ -1,24 +1,35 @@
 import Card from 'react-bootstrap/Card'
-import {Nav, Container, Navbar, Form, FormControl, Button} from 'react-bootstrap'
+import {Nav, Row, Col, Container, Navbar, Form, FormControl, Button, ListGroup} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import React, { useState, setState } from 'react';
+import React, { useState, setState, useEffect } from 'react';
 import reactDom from 'react-dom';
-const Home = async () =>{
+
+const Home =  () =>{
     
     const [query, setQuery] = useState();
-    
-    try {
-        let fetchingData = await fetch('https://strive-jobs-api.herokuapp.com/jobs?search=' + 'frontend' + '&limit=10')
-        if(!fetchingData.ok){
-            const message = `An error has occured: ${fetchingData.status}`;
-            throw new Error(message)
-        }
-        const jobs = await fetchingData.json()
-        return jobs
+    const [jobOffers, setJobOffers] = useState([]);
 
-    } catch (error) {
-        console.log(error)
+    useEffect(()=>{
+        fetchJobs();
+    })
+
+    const fetchJobs = async () =>{
+        try {
+            let response = await fetch(`https://strive-jobs-api.herokuapp.com/jobs?search=${query}&limit=10`)
+            if(response.ok){
+                let jobs = await response.json()
+                console.log(jobs)
+                setJobOffers(jobs.data)
+            }else{
+                console.log('Error')
+            }
+    
+        }
+        catch (err){
+            console.log(err)
+        }
     }
+    
     return(
         <>
          
@@ -30,32 +41,68 @@ const Home = async () =>{
                 <Nav.Link href="#features">Features</Nav.Link>
                 
                 </Nav>
-                <Form className="d-flex">
-                    <FormControl
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                    value ={setQuery}
-                    onChange={(e)=> setQuery({query:e.target.value})}
-                    />
-                    <Button variant="outline-success" >Search</Button>
-                </Form>
+
                 </Container>
             </Navbar>
  
   
 
             <h1>Here is your Job Search Results: </h1>
-            
+            <Container>
+                <Row id='row1'>
+                    <Col id='col1'>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Control
+                                type="text"
+                                placeholder="Search"
+                                value={query}
+                                onChange={e => setQuery(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ListGroup as="ul">
+                            {
+                                jobOffers.length > 0 && jobOffers.map((job) => (
 
-        
+                                    <ListGroup.Item
+                                        as="li"
+                                        className="d-flex justify-content-between align-items-start"
+                                    >
+                                        <div className="ms-2 me-auto">
+                                            <div className="fw-bold">{job.category}</div>
+                                            <div>{job.company_name}</div>
+                                            <div>publication date: <span className="date1">{job.publication_date}</span></div>
 
+                                        </div><hr />
+                                    </ListGroup.Item>
+                                    
+                                ))
+                            }
+
+                        </ListGroup>
+                    </Col>
+                </Row>
+        </Container>
         </>
     )
 
+        
+
+        
+                        }
 
 
 
-}
+
+
+
+
+
+
+
+
+
 export default Home
