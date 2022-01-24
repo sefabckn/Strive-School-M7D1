@@ -1,9 +1,11 @@
-import Card from 'react-bootstrap/Card'
+
 import {Nav, Row, Col, Container, Navbar, Form, FormControl, Button, ListGroup} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, setState, useEffect } from 'react';
 import reactDom from 'react-dom';
 import moment from 'moment'
+import Company from './Company';
+import {Link} from 'react-router-dom'
 const Home =  () =>{
     
     const [query, setQuery] = useState();
@@ -38,7 +40,7 @@ const Home =  () =>{
                         <Navbar.Brand href="#home">Find a Job</Navbar.Brand>
                         <Nav className="me-auto">
                         <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
+                        <Nav.Link href="#favs">Favourites</Nav.Link>
                         </Nav>
 
                     </Container>
@@ -70,11 +72,14 @@ const Home =  () =>{
                                             as="li"
                                             className="d-flex justify-content-between align-items-start"
                                         >
-                                            <div className="ms-2 me-auto">
+                                            <div className="ms-2 me-auto justify-content-center align-items-center">
                                                 <div className="fw-bold">{job.title}</div>
-                                                <div><a href = {job.url}> {job.company_name}</a> </div>
-                                                <div><e>Publication Date:</e> <span className="date1">{moment(job.publication_date).format('DD/MM/YYYY')}</span></div>
-
+                                               <div> <Link to={`/${job._id}`}>{job.company_name}</Link></div>
+                                                <div>
+                                                    <em>Publication Date:</em> 
+                                                    <span className="date1">{moment(job.publication_date).format('DD/MM/YYYY')}</span>
+                                                </div>
+                                                <Button variant="primary">Add To Fav</Button>{' '}
                                             </div><hr />
                                         </ListGroup.Item>
                                         
