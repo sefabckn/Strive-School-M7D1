@@ -1,15 +1,15 @@
 
 import {Nav, Row, Col, Container, Navbar, Form, FormControl, Button, ListGroup} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import React, { useState, setState, useEffect } from 'react';
+import React, { useState, setState, useEffect} from 'react';
 import reactDom from 'react-dom';
 import moment from 'moment'
 import Company from './Company';
 import {Link} from 'react-router-dom'
-const Home =  () =>{
+const Home =  ({jobOffers, setJobOffers}) =>{
     
     const [query, setQuery] = useState();
-    const [jobOffers, setJobOffers] = useState([]);
+    
 
     useEffect(()=>{
         fetchJobs();
@@ -45,9 +45,6 @@ const Home =  () =>{
 
                     </Container>
                 </Navbar>
-    
-    
-
                 <h1>Here is your Job Search Results: </h1>
                 <Container>
                     <Row id='row1'>
@@ -74,7 +71,9 @@ const Home =  () =>{
                                         >
                                             <div className="ms-2 me-auto justify-content-center align-items-center">
                                                 <div className="fw-bold">{job.title}</div>
-                                               <div> <Link to={`/${job._id}`}>{job.company_name}</Link></div>
+                                               <div>
+                                                   <Link to={`${job.company_name}`}>{job.company_name}</Link>
+                                                </div>
                                                 <div>
                                                     <em>Publication Date:</em> 
                                                     <span className="date1">{moment(job.publication_date).format('DD/MM/YYYY')}</span>
@@ -82,21 +81,15 @@ const Home =  () =>{
                                                 <Button variant="primary">Add To Fav</Button>{' '}
                                             </div><hr />
                                         </ListGroup.Item>
-                                        
                                     ))
                                 }
-
                             </ListGroup>
                         </Col>
                     </Row>
                 </Container>
             </>
         )
-
-        
-
-        
-                        }
+}
 
 
 export default Home
